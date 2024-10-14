@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "typeRoots": [
+        "./node_modules/@types",
+        "./src/@types",
+    ],  
+      "target": "ES6",                     // Versión de JavaScript a la que se compilará
+      "module": "commonjs",                   // Sistema de módulos a utilizar
+      "outDir": "./dist",                     // Carpeta donde se colocarán los archivos compilados
+      "rootDir": "./src",                     // Carpeta raíz de los archivos fuente
+      "strict": true,                          // Activa todas las verificaciones de tipo
+      "esModuleInterop": true,                 // Permite la interoperabilidad entre módulos CommonJS y ES6
+      "skipLibCheck": true,                   // Omite la verificación de tipo en los archivos de declaración
+      "forceConsistentCasingInFileNames": true, // Asegura que los nombres de archivo son consistentes
+      "declaration": true,   
+      "moduleResolution": "node",
+      "noImplicitAny": true,         
+    },
+    "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
+    "exclude": ["node_modules", "**/*.spec.ts"] // Archivos a excluir de la compilación
+  }
+  

@@ -1,0 +1,19 @@
+{
+    "entryPoints": ["src/**/*.ts"], 
+    "out": "docs",
+    "exclude": [
+        "**/node_modules/**", 
+        "**/*.spec.ts", 
+        "**/*.test.ts", 
+        "**/*.d.ts",    
+        "**/index.ts", 
+        "**/*/index.ts" 
+    ],
+    "theme": "default",
+    "includeVersion": true,
+    "hideGenerator": true,
+    "tsconfig": "tsconfig.json",
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "readme": "none" 
+}
