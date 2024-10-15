@@ -31,9 +31,10 @@ export class AuthController {
      */
     public async authenticate(req: Request, res: Response, loginData: AuthenticateUserDTO): Promise<Response> {
         try {
-            const { email, password, role } = req.body;
-            await this.registerUserUseCase.execute({ email, password, role });
-            return res.status(201).json({ message: 'User registered successfully' });
+            const { email, password } = req.body;
+            const user = await this.authenticateUserUseCase.execute({ email, password });
+            const token = this.jwtService.generateToken(user);
+            return res.status(200).json({ token });
         } catch (error) {
             const getError = error as Error;
             return res.status(400).json({ message: getError.message });
@@ -49,10 +50,9 @@ export class AuthController {
      */
     public async register(req: Request, res: Response, registerData: RegisterUserDTO): Promise<Response> {
         try {
-            const { email, password } = req.body;
-            const user = await this.authenticateUserUseCase.execute({ email, password });
-            const token = this.jwtService.generateToken(user);
-            return res.status(200).json({ token });
+            const { email, password, role } = req.body;
+            await this.registerUserUseCase.execute({ email, password, role });
+            return res.status(201).json({ message: 'User registered successfully' });
         } catch (error) {
             const getError = error as Error;
             return res.status(400).json({ message: getError.message });
