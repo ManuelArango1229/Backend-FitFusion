@@ -14,7 +14,12 @@
       "forceConsistentCasingInFileNames": true, // Asegura que los nombres de archivo son consistentes
       "declaration": true,   
       "moduleResolution": "node",
-      "noImplicitAny": true,         
+      "noImplicitAny": true,    
+      "baseUrl": "./",    
+      "paths": {
+      "@src/*": ["src/*"]
+      },
+      "types": ["jest", "node"]
     },
     "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
     "exclude": ["node_modules", "**/*.spec.ts"] // Archivos a excluir de la compilación

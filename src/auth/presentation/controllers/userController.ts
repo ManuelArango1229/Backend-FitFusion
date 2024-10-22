@@ -4,6 +4,8 @@ import { AuthenticateUserUseCase, RegisterUserUseCase } from '../../application/
 import { RegisterUserDTO } from '../../application/dtos/register_user_dto';
 import { AuthenticateUserDTO } from '../../application/dtos/authenticate_user_dto';
 import { JWTService } from '../../services/jwtService';
+import passport from 'passport';
+import { User } from '@src/auth/domain';
 
 
 /**
@@ -58,6 +60,42 @@ export class AuthController {
             return res.status(400).json({ message: getError.message });
         }
     }
+
+    /**
+    * Initiates the Google authentication flow.
+    * @param req - The request object.
+    * @param res - The response object.
+    * @returns A promise that resolves to a response object.
+    */
+    public googleAuth(req: Request, res: Response): void {
+        console.log('Iniciando autenticación con Google...');
+        passport.authenticate('google', { scope: ['profile', 'email'] })(req, res);
+    }
+
+    /**
+    * Callback function for Google authentication.
+    * @param req - The request object.
+    * @param res - The response object.
+    * @returns A promise that resolves to a response object.
+    */
+    public googleAuthCallback(req: Request, res: Response): void {
+        passport.authenticate('google', { failureRedirect: '/' }, (err, user) => {
+            if (err || !user) {
+                console.log("Error de autenticación:", err);
+                return res.status(401).json({ message: 'Authentication failed' });
+            }
+            
+            const userId = (user as User).getId();
+            if (!userId){
+                throw new Error("No hay un id");
+            }
+            const token = this.jwtService.generateToken(userId);
+            console.log("Usuario autenticado:", (user as User).getEmail()?.getValue());
+            res.status(200).json({ token });
+        })(req, res);
+    }
+
+    
 }
 
 

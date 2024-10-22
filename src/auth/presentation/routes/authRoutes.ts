@@ -7,6 +7,7 @@ import { AuthService } from '../../services/authService';
 import { MongooseUserRepository } from '../../infraestructure/database/user_repository';
 import { JWTService } from '../../services/jwtService';
 import {authMiddleware} from '../../middlewares/authMiddleware';
+import passport from 'passport';
 
 
 
@@ -22,8 +23,6 @@ const authRouter = Router();
 const authController = new AuthController(authenticateUserCase, registerUserCase, jwtService);
 
 authRouter.post('/register', (req, res) => {
-    console.log("register");
-    
     const registerData: RegisterUserDTO = {
         email: req.body.email,
         password: req.body.password,
@@ -34,7 +33,6 @@ authRouter.post('/register', (req, res) => {
 });
 
 authRouter.post('/login', (req, res) => {
-    console.log("login");
     const loginData: AuthenticateUserDTO = {
         email: req.body.email,
         password: req.body.password,
@@ -47,6 +45,9 @@ authRouter.post('/login', (req, res) => {
 authRouter.get('/profile', authMiddleware, (req, res) => {
     res.status(200).json({ message: 'User profile' });
 });
+
+authRouter.get('/google', (req, res) => authController.googleAuth(req, res));
+authRouter.get('/google/callback', (req, res) => authController.googleAuthCallback(req, res));
 
 // Exportar el router
 export default authRouter;

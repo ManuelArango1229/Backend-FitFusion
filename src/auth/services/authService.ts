@@ -18,7 +18,6 @@ export class AuthService {
     public async authenticate(authenticateUserDTO: AuthenticateUserDTO): Promise<string> {
         const { email, password } = authenticateUserDTO;
         const user = await this.userRepository.findByEmail(email);
-
         if (!user || !user.validatePassword(password)) {
             throw new Error('Invalid credentials');
         }

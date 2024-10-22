@@ -4,10 +4,10 @@ import { Email, Password, UserRole } from "../index";
  * Represents a user in the system.
  */
 export class User {
-  private _id?: string;
-  private _googleId?: string;
-  private _email: Email;
-  private _password: Password | null;
+  private _id: string | null = null;
+  private _googleId: string | null = null;
+  private _email: Email | null = null;
+  private _password: Password | null = null;
   private _role: UserRole;
 
   /**
@@ -16,7 +16,7 @@ export class User {
    * @param {Password} password - Password of the user.
    * @param {UserRole} role - Rol of the user (ej: UserRole.USER).
    */
-  constructor(email: Email, password: Password | null, role: UserRole, googleId?: string) {
+  constructor(email: Email | null, password: Password | null, role: UserRole, googleId?: string) {
     this._email = email;
     this._password = password;
     this._role = role;
@@ -37,7 +37,7 @@ export class User {
    * Get the id of the user.
    * @returns {string} Id of the user.
    */
-  public getId(): string | undefined {
+  public getId(): string | null {
     return this._id;
   }
 
@@ -53,7 +53,7 @@ export class User {
    * Get the googleId of the user.
    * @returns {string} googleId of the user.
    */
-  public getGoogleId(): string | undefined {
+  public getGoogleId(): string | null {
     return this._googleId;
   }
 
@@ -62,7 +62,7 @@ export class User {
    * Get the email of the user.
    * @returns {Email} Email of the user.
    */
-  public getEmail(): Email {
+  public getEmail(): Email | null {
     return this._email;
   }
 
