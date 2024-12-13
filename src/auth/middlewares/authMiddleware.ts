@@ -1,7 +1,6 @@
-
-import { Response, NextFunction } from 'express';
-import { JWTService } from '../services/jwtService';
-import { CustomRequest } from '../types/customRecuest';
+import { Response, NextFunction } from "express";
+import { JWTService } from "../services/jwtService";
+import { CustomRequest } from "../types/customRecuest";
 
 const jwtService = new JWTService();
 
@@ -17,18 +16,23 @@ const jwtService = new JWTService();
  * If the token is valid, the user ID is attached to the request object and the next middleware is called.
  * If no token is provided or the token is invalid, a 401 Unauthorized response is sent.
  */
-export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunction): void => {
-  const token = req.headers['authorization']?.split(' ')[1]; 
+export const authMiddleware = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+): void => {
+  const token = req.headers["authorization"]?.split(" ")[1];
   if (!token) {
-    res.status(401).json({ message: 'No token provided' });
-    return; 
+    res.status(401).json({ message: "No token provided" });
+    return;
   }
   try {
     const decoded = jwtService.decodeToken(token);
-    req.userId = decoded.id; 
+    req.userId = decoded.id;
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Invalid token' });
-    return; 
+    console.log(error);
+    res.status(401).json({ message: "Invalid token" });
+    return;
   }
 };
