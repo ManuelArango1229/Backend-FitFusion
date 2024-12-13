@@ -6,6 +6,9 @@ export interface IUser extends Document {
   password?: string;
   googleId?: string;
   role: string;
+  name: string;
+  birthdate: string;
+  phone: string;
 }
 
 const userSchema: Schema = new Schema({
@@ -13,6 +16,9 @@ const userSchema: Schema = new Schema({
   password: { type: String },
   googleId: { type: String, sparse: true },
   role: { type: String, required: true, enum: ['USER', 'TRAINER', 'ADMIN'] },
+  name: { type: String },
+  birthdate: { type: String },
+  phone: { type: String}
 },
   { timestamps: true });
 

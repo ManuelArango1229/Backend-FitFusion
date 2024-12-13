@@ -11,7 +11,10 @@ export class MongooseUserRepository implements UserRepository {
       email: user.getEmail()?.getValue(),
       password: user.getPassword()?.getValue(),
       googleId: user.getGoogleId(),
-      role: user.getRole()
+      role: user.getRole(),
+      name: user.getName(), 
+      birthdate: user.getBirthDate(),
+      phone: user.getPhone()
     });
     await newUser.save();
     user.setId(newUser._id.toString());
@@ -27,7 +30,14 @@ export class MongooseUserRepository implements UserRepository {
         throw new Error("Password is required but missing from the user document");
 
       }
-      const user = new User(new Email(userDoc.email), new Password(userDoc.password), userDoc.role as UserRole);
+      const user = new User(
+        new Email(userDoc.email),
+        new Password(userDoc.password), 
+        userDoc.role as UserRole,
+        userDoc.name as string,
+        userDoc.birthdate as string,
+        userDoc.phone as string
+      );
       user.setId(userDoc._id.toString());
       return user;
     }
@@ -38,7 +48,15 @@ export class MongooseUserRepository implements UserRepository {
     const userDoc = await UserModel.findOne({ googleId });
     if (userDoc) {
       const email = userDoc.email ? new Email(userDoc.email) : null;
-      const user = new User(email, null, userDoc.role as UserRole, userDoc.googleId)
+      const user = new User(
+        email,
+        null,
+        userDoc.role as UserRole,
+        userDoc.name as string,
+        userDoc.birthdate as string,
+        userDoc.phone as string,
+        userDoc.googleId as string
+      )
       user.setId(userDoc._id.toString());
       return user;
     }

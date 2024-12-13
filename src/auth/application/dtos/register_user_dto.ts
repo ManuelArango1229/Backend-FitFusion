@@ -18,6 +18,10 @@ export class RegisterUserDTO {
      */
     public role: string;
 
+    public name: string;
+    public birthdate: string;
+    public phone: string;
+
     /**
      * Constructs a new RegisterUserDTO.
      * 
@@ -25,9 +29,12 @@ export class RegisterUserDTO {
      * @param password - The password for the user's account.
      * @param role - The role assigned to the user.
      */
-    constructor(email: string, password: string, role: string) {
+    constructor(email: string, password: string, name: string, birthdate: string, phone: string, role: string) {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.phone = phone;
     }
 }

@@ -30,6 +30,9 @@ authRouter.post("/register", (req, res) => {
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
+    name: req.body.name,
+    birthdate: req.body.birthdate,
+    phone: req.body.phone,
   };
 
   authController.register(req, res, registerData);

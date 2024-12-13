@@ -7,7 +7,7 @@ import { RegisterUserDTO } from "../../application/dtos/register_user_dto";
 import { AuthenticateUserDTO } from "../../application/dtos/authenticate_user_dto";
 import { JWTService } from "../../services/jwtService";
 import passport from "passport";
-import { User } from "@src/auth/domain";
+import { User } from "../../domain/entities/user";
 
 /**
  * Controller responsible for handling authentication-related requests.
@@ -42,10 +42,29 @@ export class AuthController {
       const user = await this.authenticateUserUseCase.execute({
         email,
         password,
-      });
-      const token = this.jwtService.generateToken(user);
-      res.cookie('accessToken', token, {sameSite: 'strict',});
-      return res.json({message: 'Succeed Auth'});
+      }); 
+  
+      const id = user.getId()!;
+      const emailUser = user.getEmail()?.getValue();
+      const passwordUser = user.getPassword()?.getValue();
+      const role = user.getRole();
+      const name = user.getName();
+      const birthdate = user.getBirthDate();
+      const phone = user.getPhone();
+      const token = this.jwtService.generateToken(id);
+      const responseUser = {
+        id,
+        emailUser,
+        passwordUser,
+        role,
+        token,
+        name,
+        birthdate,
+        phone
+      }
+      console.log(responseUser);
+
+      return res.json(responseUser);
     } catch (error) {
       const getError = error as Error;
       return res.status(400).json({ message: getError.message });
@@ -65,8 +84,8 @@ export class AuthController {
     registerData: RegisterUserDTO,
   ): Promise<Response> {
     try {
-      const { email, password, role } = req.body;
-      await this.registerUserUseCase.execute({ email, password, role });
+      const { email, password, role, name, birthdate, phone } = req.body;
+      await this.registerUserUseCase.execute({ email, password, role, name, birthdate, phone });
       return res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       const getError = error as Error;
@@ -106,7 +125,7 @@ export class AuthController {
         "Usuario autenticado:",
         (user as User).getEmail()?.getValue(),
       );
-      res.status(200).json({ token });
+      res.status(200).redirect("http:localhost:5173/home");
     })(req, res);
   }
   /**

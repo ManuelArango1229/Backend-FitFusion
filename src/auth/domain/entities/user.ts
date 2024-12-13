@@ -8,6 +8,9 @@ export class User {
   private _email: Email | null = null;
   private _password: Password | null = null;
   private _role: UserRole;
+  private _name: string | null = null;
+  private _birthDate: string | null = null;
+  private _phone: string | null = null;
 
   /**
    * Creates a new User.
@@ -19,11 +22,17 @@ export class User {
     email: Email | null,
     password: Password | null,
     role: UserRole,
+    name: string | null,
+    birthDate: string | null,
+    phone: string | null,
     googleId?: string,
   ) {
     this._email = email;
     this._password = password;
     this._role = role;
+    this._name = name;
+    this._birthDate = birthDate;
+    this._phone = phone;
     if (googleId) {
       this._googleId = googleId;
     }
@@ -82,6 +91,38 @@ export class User {
    */
   public getRole(): UserRole {
     return this._role;
+  }
+
+  /**
+   * Get the name of the user.
+   * @returns {string} name of the user.
+   */
+  public getName(): string | null {
+    return this._name;
+  }
+
+  /**
+   * Set the name of the user.
+   * @param {string} name - name of the user.
+   */ 
+  public setName(name: string): void {
+    this._name = name;  
+  }
+
+  public getBirthDate(): string | null {
+    return this._birthDate;
+  }
+
+  public setBirthDate(birthDate: string): void {
+    this._birthDate = birthDate;
+  }
+
+  public getPhone(): string | null {
+    return this._phone;
+  }
+
+  public setPhone(phone: string): void {
+    this._phone = phone;
   }
 
   /**
