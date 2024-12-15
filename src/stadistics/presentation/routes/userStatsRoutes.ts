@@ -20,7 +20,7 @@ const userStatsController = new UserStatsController(
     updateUserStatsUseCase
 );
 
-userStatsRouter.get("/", (req, res) => {
+userStatsRouter.post("/", (req, res) => {
     userStatsController.getUserStats(req,res);
 })
 

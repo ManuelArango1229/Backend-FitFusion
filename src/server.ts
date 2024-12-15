@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import "./auth/infraestructure/passport/googleStratety";
 import authRouter from "./auth/presentation/routes/authRoutes";
 import userStatsRouter from "./stadistics/presentation/routes/userStatsRoutes";
+import routineRouter from "./routines/presentation/routes/routineRoutes";
 import passport from "passport";
 import session from "express-session";
 import cors from "cors";
@@ -11,7 +12,7 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 
-app.use(express.json()); // Middleware para analizar JSON
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -26,17 +27,17 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "",
     credentials: true,
   }),
 );
 
 app.use("/api/auth", authRouter);
 app.use("/api/stats", userStatsRouter);
+app.use("/api/routines", routineRouter);
 
 const PORT = process.env.PORT || 3000;
 
-// Conectar a MongoDB y empezar el servidor
 mongoose
   .connect(process.env.MONGO_URI || "")
   .then(() => {

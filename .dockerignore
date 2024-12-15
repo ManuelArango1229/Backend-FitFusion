@@ -1,0 +1,33 @@
+
+# Node modules y cache
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Archivos de entorno y configuración sensible
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Archivos de Docker y configuraciones locales
+Dockerfile
+docker-compose.yml
+
+# Archivos de control de versiones
+.git
+.gitignore
+
+# Archivos de logs
+*.log
+
+# Carpetas de desarrollo o temporales
+.vscode
+.idea
+dist
+build
+coverage
+.cache
+tmp
