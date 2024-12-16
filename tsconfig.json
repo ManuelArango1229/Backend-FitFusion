@@ -19,7 +19,7 @@
       "paths": {
       "@src/*": ["src/*"]
       },
-      "types": ["jest", "node"]
+      "types": ["node"]
     },
     "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
     "exclude": ["node_modules", "**/*.spec.ts"] // Archivos a excluir de la compilación
