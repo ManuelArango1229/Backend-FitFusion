@@ -25,17 +25,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware de CORS para permitir cualquier origen y permitir el uso de credenciales
-const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow: boolean) => void) => {
-    // Permitir solicitudes desde cualquier origen
-    callback(null, true);
-  },
-  credentials: true,  // Permitir el uso de credenciales (cookies)
-};
 
-app.use(cors(corsOptions));
-app.options('*', cors());  
+
+
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
+
+app.options('*', cors()); 
+
 
 app.use("/api/auth", authRouter);
 app.use("/api/stats", userStatsRouter);
