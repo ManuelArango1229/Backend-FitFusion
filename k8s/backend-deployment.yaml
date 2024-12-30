@@ -15,8 +15,9 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
+        - name: backend-container
           image: manuelarango1229/backfitfusion:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           envFrom:

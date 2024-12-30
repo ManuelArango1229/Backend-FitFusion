@@ -25,16 +25,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(
+  cors({
+    origin: "*",
+  }),
+);
 
-
-
-app.use(cors({
-  origin: true,
-  credentials: true,
-}));
-
-app.options('*', cors()); 
-
+// Opcional: Middleware para manejar solicitudes OPTIONS globalmente
+app.options("*", cors());
 
 app.use("/api/auth", authRouter);
 app.use("/api/stats", userStatsRouter);
