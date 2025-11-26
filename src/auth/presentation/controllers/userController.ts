@@ -42,8 +42,8 @@ export class AuthController {
       const user = await this.authenticateUserUseCase.execute({
         email,
         password,
-      }); 
-  
+      });
+
       const id = user.getId()!;
       const emailUser = user.getEmail()?.getValue();
       const passwordUser = user.getPassword()?.getValue();
@@ -60,8 +60,8 @@ export class AuthController {
         token,
         name,
         birthdate,
-        phone
-      }
+        phone,
+      };
       console.log(responseUser);
 
       return res.json(responseUser);
@@ -84,8 +84,16 @@ export class AuthController {
     registerData: RegisterUserDTO,
   ): Promise<Response> {
     try {
+      console.log(req.body);
       const { email, password, role, name, birthdate, phone } = req.body;
-      await this.registerUserUseCase.execute({ email, password, role, name, birthdate, phone });
+      await this.registerUserUseCase.execute({
+        email,
+        password,
+        role,
+        name,
+        birthdate,
+        phone,
+      });
       return res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       const getError = error as Error;
@@ -125,7 +133,8 @@ export class AuthController {
         "Usuario autenticado:",
         (user as User).getEmail()?.getValue(),
       );
-      res.status(200).redirect("http:localhost:5173/home");
+      const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+      res.redirect(`${frontendUrl}/home`);
     })(req, res);
   }
   /**
