@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  # ── JOB 1: Construir y publicar la imagen desde el repo de FitFusion ─────
+  # ── JOB 1: Construir y publicar la imagen en GHCR ────────────────
   build-image:
     name: Build & Push Docker image
     runs-on: ubuntu-latest
@@ -44,39 +44,22 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.image }}
 
-  # ── JOB 2: Pipeline DevSecOps ─────────────────────────────────────────────
+  # ── JOB 2: Pipeline DevSecOps ─────────────────────────────────────
   security:
     name: DevSecOps Pipeline
     needs: build-image
     uses: ManuelArango1229/devsecops-engine-/.github/workflows/reusable-devsecops.yml@main
     with:
-      # Imagen ya construida y publicada en GHCR por el job anterior
-      target_image: ${{ needs.build-image.outputs.image }}
-      target_port:  '3000'
-      service_name: 'fitfusion-backend'
-      criticality:  'high'
-      environment:  'staging'
-
-      # Repo cuyo código fuente escaneará Semgrep
+      target_image:    ${{ needs.build-image.outputs.image }}
+      target_port:     '3000'
+      service_name:    'fitfusion-backend'
+      criticality:     'high'
+      environment:     'staging'
       source_repo:     'ManuelArango1229/Backend-FitFusion'
       source_repo_ref: 'main'
-
-      # Forzar Node.js para Semgrep (evita auto-detección incorrecta del engine)
-      language: 'nodejs'
-
+      language:        'nodejs'
+      use_ghcr:        true      # imagen en GHCR privado → necesita login
     secrets:
-      # ── IA ──────────────────────────────────────────────────────────────
       GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
-
-      # ── Token para pull de la imagen privada desde GHCR ─────────────────
-      GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # ── Variables de entorno para levantar FitFusion en los scans DAST ──
-      # Configura APP_SECRETS en Settings → Secrets → Actions de tu repo
-      # con el formato: "KEY1=valor1,KEY2=valor2,KEY3=valor3"
-      #
-      # Para FitFusion necesitas al menos:
-      #   MONGO_URI=<tu_mongo_uri_de_test>,JWT_SECRET=<secreto>,NODE_ENV=test
-      #
-      # Opción A — Un solo secret APP_SECRETS con todo concatenado:
-      APP_SECRETS: ${{ secrets.APP_SECRETS }}
+      GHCR_TOKEN:        ${{ secrets.GITHUB_TOKEN }}
+      APP_SECRETS:       ${{ secrets.APP_SECRETS }}
