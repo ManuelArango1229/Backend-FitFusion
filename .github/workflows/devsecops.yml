@@ -1,0 +1,21 @@
+name: DevSecOps – FitFusion Backend
+ 
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+ 
+jobs:
+  security:
+    uses: ManuelArango1229/devsecops-engine-/.github/workflows/reusable-devsecops.yml@main
+    with:
+      # FitFusion tiene Dockerfile propio — el pipeline lo construye y escanea
+      target_image:  'fitfusion-backend:${{ github.sha }}'
+      build_context: '.'
+      target_port:   '3000'
+      service_name:  'fitfusion-backend'
+      criticality:   'high'
+      environment:   'staging'
+    secrets:
+      GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
