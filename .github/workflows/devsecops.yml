@@ -58,8 +58,18 @@ jobs:
       source_repo:     'ManuelArango1229/Backend-FitFusion'
       source_repo_ref: 'main'
       language:        'nodejs'
-      use_ghcr:        true      # imagen en GHCR privado → necesita login
+      use_ghcr:        true
+
     secrets:
+      # ── IA — al menos GROQ_API_KEY es obligatoria ────────────────
       GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
+      OPENAI_API_KEY:    ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      # ── GHCR — para hacer pull de la imagen privada ──────────────
       GHCR_TOKEN:        ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Variables de entorno para levantar FitFusion en DAST ─────
+      # Configura este secret en Settings → Secrets → Actions con:
+      # MONGO_URI=mongodb+srv://...,JWT_SECRET=...,NODE_ENV=test,PORT=3000,GOOGLE_CLIENT_ID=dummy,GOOGLE_CLIENT_SECRET=dummy
       APP_SECRETS:       ${{ secrets.APP_SECRETS }}
